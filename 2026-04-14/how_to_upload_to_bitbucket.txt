@@ -1,1 +1,8 @@
-
+1. Clone the API to the VDI. 
+2. go to that folder. 
+3. Paste the flask code to that folder. 
+4. run these commands.
+  4a. git checkout -b aura_api_local
+  4a. git add .
+  4b. git commit -m "Authentication + Upload to S3 Modules Added"
+  4c. git push
