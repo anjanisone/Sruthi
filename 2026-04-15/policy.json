@@ -1,0 +1,116 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AuthStsGciGetCallerIdentity",
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    },
+    {
+      "Sid": "UploadIngestJobsStorageS3",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "s3:AbortMultipartUpload",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": [
+        "arn:aws:s3:::OUR_UPLOAD_BUCKET",
+        "arn:aws:s3:::OUR_UPLOAD_BUCKET/*",
+        "arn:aws:s3:::OUR_ARTIFACTS_AND_CLONE_BUCKET",
+        "arn:aws:s3:::OUR_ARTIFACTS_AND_CLONE_BUCKET/*"
+      ]
+    },
+    {
+      "Sid": "KmsForS3CustomerManagedKeys",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:GenerateDataKey",
+        "kms:DescribeKey"
+      ],
+      "Resource": [
+        "arn:aws:kms:OUR_REGION:OUR_ACCOUNT_ID:key/OUR_S3_BUCKET_CMK_KEY_ID"
+      ]
+    },
+    {
+      "Sid": "JobsPhasesModelInferenceBedrock",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:OUR_REGION::foundation-model/*",
+        "arn:aws:bedrock:OUR_REGION:OUR_ACCOUNT_ID:inference-profile/*"
+      ]
+    },
+    {
+      "Sid": "RuntimeConfigSecretsManager",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret"
+      ],
+      "Resource": [
+        "arn:aws:secretsmanager:OUR_REGION:OUR_ACCOUNT_ID:secret:OUR_AURA_SECRET_PREFIX/*"
+      ]
+    },
+    {
+      "Sid": "JobsEstimatesEventsApplicationStateDynamoDB",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:GetItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable"
+      ],
+      "Resource": [
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_JOBS_TABLE",
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_JOBS_TABLE/index/*",
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_ESTIMATES_TABLE",
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_ESTIMATES_TABLE/index/*",
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_EVENTS_TABLE",
+        "arn:aws:dynamodb:OUR_REGION:OUR_ACCOUNT_ID:table/OUR_AURA_EVENTS_TABLE/index/*"
+      ]
+    },
+    {
+      "Sid": "JobsProceedNotificationsSes",
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": [
+        "arn:aws:ses:OUR_REGION:OUR_ACCOUNT_ID:identity/*",
+        "arn:aws:ses:OUR_REGION:OUR_ACCOUNT_ID:configuration-set/*"
+      ]
+    },
+    {
+      "Sid": "ServiceObservabilityCloudWatchLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:aws:logs:OUR_REGION:OUR_ACCOUNT_ID:log-group:/aws/aura/OUR_ENV/*"
+      ]
+    }
+  ]
+}
